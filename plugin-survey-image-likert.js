@@ -1,9 +1,31 @@
-var jsPsychSurveyLikert = (function (jspsych) {
+var jsPsychSurveyImageLikert = (function (jspsych) {
   'use strict';
 
   const info = {
-      name: "survey-likert",
-      parameters: {
+        name: "survey-image-likert",
+        parameters: {
+          stimulus: {
+              type: jspsych.ParameterType.IMAGE,
+              pretty_name: "Stimulus",
+              default: undefined,
+          },
+          image_preamble: {
+            type: jspsych.ParameterType.HTML_STRING,
+            pretty_name: "Image Preamble",
+            default: null,
+          },
+          image_width: {
+            type: jspsych.ParameterType.INT,
+            pretty_name: 'Image width',
+            default: 500,
+            description: 'Width of the image in pixels.'
+          },
+          scale_height: {
+            type: jspsych.ParameterType.INT,
+            pretty_name: 'Scale height',
+            default: 300,
+            description: 'Height of the likert scales in pixels.'
+          },
           /** Array containing one or more objects with parameters for the question(s) that should be shown on the page. */
           questions: {
               type: jspsych.ParameterType.COMPLEX,
@@ -100,6 +122,8 @@ var jsPsychSurveyLikert = (function (jspsych) {
                   ".jspsych-survey-likert-opts:before { content: ''; position:relative; top:11px; /*left:9.5%;*/ display:block; background-color:#efefef; height:4px; width:100%; }" +
                   ".jspsych-survey-likert-opts:last-of-type { border-bottom: 0; }" +
                   ".jspsych-survey-likert-opts li { display:inline-block; /*width:19%;*/ text-align:center; vertical-align: top; }" +
+                  ".image-likert-container { display: flex; }" +
+                  `.box2 { width: 100%; height: ${trial.scale_height}px; overflow-y: scroll }` +
                   ".jspsych-survey-likert-opts li input[type=radio] { display:block; position:relative; top:0; left:50%; margin-left:-6px; }";
           html += "</style>";
           // show preamble text
@@ -109,6 +133,13 @@ var jsPsychSurveyLikert = (function (jspsych) {
                       trial.preamble +
                       "</div>";
           }
+          html += `<div class="image-likert-container">`;
+          html += `<div class="box1"><img src="${trial.stimulus}" width="${trial.image_width}">`;
+          if (trial.image_preamble !== null) {
+                html += `<div id="jspsych-survey-likert-preamble" class="jspsych-survey-likert-preamble">${trial.image_preamble}</div>`;       
+          }
+          html += `</div>`;
+          html += '<div class="box2">';
           if (trial.autocomplete) {
               html += '<form id="jspsych-survey-likert-form">';
           }
@@ -159,6 +190,7 @@ var jsPsychSurveyLikert = (function (jspsych) {
                   trial.button_label +
                   '"></input>';
           html += "</form>";
+          html += "</div></div>";
           display_element.innerHTML = html;
           display_element.querySelector("#jspsych-survey-likert-form").addEventListener("submit", (e) => {
               e.preventDefault();
@@ -192,6 +224,7 @@ var jsPsychSurveyLikert = (function (jspsych) {
                   rt: response_time,
                   response: question_data,
                   question_order: question_order,
+                  stimulus: trial.stimulus,
               };
               display_element.innerHTML = "";
               // next trial
