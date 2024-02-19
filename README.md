@@ -2,6 +2,8 @@
 
 This plugin is based on [the jsPsych survey-likert plugin](https://www.jspsych.org/7.3/plugins/survey-likert/). A stimulus image is displayed on the left and the Likert scales on the right. Since you can scroll through the questions while keeping the image fixed, this plugin may be useful when many scales are used.
 
+![image-likert](https://github.com/kurokida/jsPsychSurveyImageLikert/assets/32691644/171d6a84-6d5e-41f3-8075-04b8974e0160)
+
 # Added properties
 You can use this plugin in much the same way as the survey-likert plugin. The following properties are newly added.
 
